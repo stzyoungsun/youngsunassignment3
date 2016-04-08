@@ -60,6 +60,7 @@ package
 		/**
 		 *Note @유영선 Image 병합 시작 
 		 * 이진 트리를 이용하여 큰 Bimap을 쪼개어 그 좌표 값을 이진트리로 만든후 중위 순회를 이용하여 이미지들의 좌표를 저장
+		 * sheet에 평행 이동을 이용하여 저장 된 좌표에 출력
 		 */		
 		private function setPacking() : void
 		{
@@ -73,8 +74,6 @@ package
 			}
 			_cBinaryTree.getroot().inOrder();
 			
-			
-			
 			for(var j : int=0; j<Node.sImageRectVetor.length; j++)
 			{
 				var imageMatrix:Matrix = new Matrix();
@@ -82,6 +81,7 @@ package
 				trace("Image x: "+Node.sImageRectVetor[j].x);
 				trace("Image y : "+Node.sImageRectVetor[j].y);
 				_bitmap = _pieceImage["piece" + Node.sImageIDArray[j] + ".png"];
+				
 				imageMatrix.translate( Node.sImageRectVetor[j].x,Node.sImageRectVetor[j].y);
 				_spriteSheet.draw(_bitmap,imageMatrix);
 			}

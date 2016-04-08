@@ -8,9 +8,11 @@ package
 		private var _right : Node ;
 		private var _rc : Rectangle;
 		private var _imageID : int = -1;
+		private var _rotateFlag : Boolean = false;
 		
 		public static var sImageRectVetor : Vector.<Rectangle> = new Vector.<Rectangle>;
 		public static var sImageIDArray : Array = new Array();
+		public static var sRotateFlagArray : Array = new Array();
 		
 		public function Node(rc : Rectangle,imageID : int )
 		{
@@ -31,6 +33,8 @@ package
 			{
 				sImageIDArray.push(_imageID);	//이미지 아이디를 벡터에 저장
 				sImageRectVetor.push(_rc);     //이미지 좌표를 벡터에 저장
+				sRotateFlagArray.push(_rotateFlag);
+				trace(_rotateFlag);
 			}
 				
 			if(_right != null)
@@ -68,6 +72,14 @@ package
 		
 		public function setImageID(imageID : int) : void {
 			this._imageID = imageID;
+		}
+		
+		public function getRotateFlag() :  Boolean{
+			return _rotateFlag;
+		}
+		
+		public function setRotateFlag(rotateFlag : Boolean) : void {
+			this._rotateFlag = rotateFlag;
 		}
 	}
 }
