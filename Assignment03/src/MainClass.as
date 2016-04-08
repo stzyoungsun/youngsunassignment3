@@ -52,7 +52,8 @@ package
 			_progressTextField.text = _progressText;
 			
 			_cMakeSpriteSheet = new MakeSpriteSheet(_cLoaderImage.getBitmap());
-			_outMainBitmap(_cLoaderImage.getBitmap()["piece001.png"]);
+			
+			_outMainBitmap(_cMakeSpriteSheet.getSheet());
 		}
 		
 		public function progressLoadImage(progressCount : int) : void
