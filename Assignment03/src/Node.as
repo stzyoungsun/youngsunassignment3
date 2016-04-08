@@ -19,30 +19,24 @@ package
 			
 		}
 	
-
+		/**
+		 *Note @유영선 중위 순회 알고리즘 
+		 * 
+		 */		
 		public function inOrder() : void
 		{
 			if(_left != null)
 				_left.inOrder();
-			if(_imageID != -1)
+			if(_imageID != -1)  //이미지가 존재 할 경우
 			{
-				sImageIDArray.push(_imageID);
-				sImageRectVetor.push(_rc);
+				sImageIDArray.push(_imageID);	//이미지 아이디를 벡터에 저장
+				sImageRectVetor.push(_rc);     //이미지 좌표를 벡터에 저장
 			}
 				
-			
 			if(_right != null)
 				_right.inOrder();
 		}
 		
-		public function preOrder() : void
-		{
-			if(_left != null)
-				_left.preOrder();
-			
-			if(_right != null)
-				_right.preOrder();
-		}
 		
 		public function  getLeft() : Node{
 			return _left;

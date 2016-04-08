@@ -15,11 +15,20 @@ package
 			_cMainClass.initialize(outTextField, outBitmap);
 		}
 		
+		/**
+		 * 
+		 * @param textField 로딩 텍스트
+		 * Note @유영선 이미지  로딩 화면 출력 
+		 */		
 		public function outTextField(textField : TextField ) : void
 		{
 			addChild(textField);
 		}
-		
+		/**
+		 * 
+		 * @param bitmap 병합된 bitmap
+		 * Note @유영선 병합된 bitmap 화면 출력
+		 */		
 		public function outBitmap(bitmap : Bitmap) : void
 		{
 			addChild(bitmap);

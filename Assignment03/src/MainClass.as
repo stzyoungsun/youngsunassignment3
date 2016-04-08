@@ -2,10 +2,6 @@ package
 {
 	import flash.text.TextField;
 	
-	import LoaderImage;
-	
-	import MakeSpriteSheet;
-	
 	public class MainClass
 	{
 		private var _cLoaderImage : LoaderImage;
@@ -24,7 +20,12 @@ package
 		{
 			
 		}
-		
+		/**
+		 * 
+		 * @param outMainTexture 화면에 로딩 화면 출력 하기 위한 함수 호출
+		 * @param outMainBitmap  화면에 병합된 bitmap 출력하기 위한 함수 호출
+		 * Note @유영선 
+		 */		
 		public function initialize (outMainTexture:Function,outMainBitmap:Function) : void
 		{
 			_outMainTexture=outMainTexture;
@@ -45,7 +46,10 @@ package
 			_cLoaderImage = new LoaderImage(_completeLoadImage,_progressLoadImage);
 			
 		}
-		
+		/**
+		 * Note @유영선 이미지 로드가 모두 완료 후 호출 되는 함수
+		 * 
+		 */		
 		public function completeLoadImage() : void
 		{
 			_progressText = "로딩 완료";
@@ -55,7 +59,11 @@ package
 			
 			_outMainBitmap(_cMakeSpriteSheet.getSheet());
 		}
-		
+		/**
+		 * 
+		 * @param progressCount 로드가 완료 된 숫자
+		 * 이미지 로드 중에 호출 되는 함수
+		 */		
 		public function progressLoadImage(progressCount : int) : void
 		{
 			_progressText = "로딩 중 : " + String(progressCount);

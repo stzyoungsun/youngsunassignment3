@@ -7,10 +7,6 @@ package
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
-	import BinaryTree;
-	import LoaderImage;
-	import Node;
-	import IDBitmap;
 	
 	public class MakeSpriteSheet
 	{	
@@ -18,8 +14,10 @@ package
 		public static const MAX_SHEET_HEIGHT :int = 1024;
 		
 		private var _pieceImage : Dictionary = new Dictionary();
+		
 		private var _cBinaryTree : BinaryTree;
 		private var _cIDBitmap : IDBitmap;
+		private var _cSaveToFile : SaveToFile = new SaveToFile();
 		
 		private var _spriteSheet : BitmapData = new BitmapData(MAX_SHEET_WIDTH,MAX_SHEET_HEIGHT);
 		private var _bitmap : Bitmap;
@@ -34,6 +32,10 @@ package
 			_bitmap = new Bitmap(_spriteSheet);
 			
 		}
+		/**
+		 *Note @유영선 로드 된 이미지 데이터를 크기 별로 정렬 하는 함수 
+		 * -> 크기 별로 정렬 하면 병합 알고리즘의 성능이 더 높아 지기 때문에 정렬을 하였습니다
+		 */		
 		private function sortImage() : void
 		{
 			var imageTemp : Vector.<Bitmap> = new Vector.<Bitmap>;
@@ -55,6 +57,10 @@ package
 					return 0;	
 			}
 		}
+		/**
+		 *Note @유영선 Image 병합 시작 
+		 * 이진 트리를 이용하여 큰 Bimap을 쪼개어 그 좌표 값을 이진트리로 만든후 중위 순회를 이용하여 이미지들의 좌표를 저장
+		 */		
 		private function setPacking() : void
 		{
 
@@ -69,7 +75,7 @@ package
 			
 			
 			
-			for(var j : int=0; j<LoaderImage.MAC_PIECE_COUNT; j++)
+			for(var j : int=0; j<Node.sImageRectVetor.length; j++)
 			{
 				var imageMatrix:Matrix = new Matrix();
 				trace("ImageID : "+Node.sImageIDArray[j]);
@@ -79,9 +85,12 @@ package
 				imageMatrix.translate( Node.sImageRectVetor[j].x,Node.sImageRectVetor[j].y);
 				_spriteSheet.draw(_bitmap,imageMatrix);
 			}
+			
 		}
 		public function getSheet() : Bitmap
 		{
+			_cSaveToFile.saveToPNG(_bitmap);
+			_cSaveToFile.exportToXML();
 			return _bitmap;
 		}
 		
