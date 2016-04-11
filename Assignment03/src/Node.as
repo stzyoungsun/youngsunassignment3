@@ -1,23 +1,24 @@
 package
 {
 	import flash.geom.Rectangle;
+	import flash.geom.Point;
 
 	public class Node
 	{
 		private var _left : Node ;
 		private var _right : Node ;
 		private var _rc : Rectangle;
-		private var _imageID : int = -1;
+		private var _imageName : String = "NULL";
 		private var _rotateFlag : Boolean = false;
 		
 		public static var sImageRectVetor : Vector.<Rectangle> = new Vector.<Rectangle>;
-		public static var sImageIDArray : Array = new Array();
-		public static var sRotateFlagArray : Array = new Array();
+		public static var sImageNameArray : Array = new Array();
+		public static var sMaxImagePos : Point = new Point(0,0);
 		
-		public function Node(rc : Rectangle,imageID : int )
+		public function Node(rc : Rectangle,imageName : String )
 		{
 			this._rc = rc;
-			this._imageID = imageID;
+			this._imageName = imageName;
 			
 		}
 	
@@ -29,12 +30,15 @@ package
 		{
 			if(_left != null)
 				_left.inOrder();
-			if(_imageID != -1)  //이미지가 존재 할 경우
+			if(_imageName != "NULL")  //이미지가 존재 할 경우
 			{
-				sImageIDArray.push(_imageID);	//이미지 아이디를 벡터에 저장
+				sImageNameArray.push(_imageName);	//이미지 아이디를 벡터에 저장
 				sImageRectVetor.push(_rc);     //이미지 좌표를 벡터에 저장
-				sRotateFlagArray.push(_rotateFlag);
-				trace(_rotateFlag);
+				
+				if(sMaxImagePos.x < _rc.x+_rc.width)
+					sMaxImagePos.x = _rc.x+_rc.width;
+				if(sMaxImagePos.y < _rc.y+_rc.height)
+					sMaxImagePos.y = _rc.y+_rc.height;
 			}
 				
 			if(_right != null)
@@ -66,12 +70,12 @@ package
 			this._rc = rc;
 		}
 		
-		public function getImageID() :  int{
-			return _imageID;
+		public function getImageName() :  String{
+			return _imageName;
 		}
 		
-		public function setImageID(imageID : int) : void {
-			this._imageID = imageID;
+		public function setImageName(imageName : String) : void {
+			this._imageName = imageName;
 		}
 		
 		public function getRotateFlag() :  Boolean{

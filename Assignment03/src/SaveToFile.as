@@ -41,8 +41,8 @@ package
 			for(var i:int = 0; i<Node.sImageRectVetor.length; ++i)
 			{
 				//name Node.
-				_fileStream.writeUTFBytes("<SubTexture name=\"" + "piece" + Node.sImageIDArray[i] + ".png" + "\" x=\"" + Node.sImageRectVetor[i].x 
-					+ "\" y=\"" + Node.sImageRectVetor[i].y + "\" width=\"" + Node.sImageRectVetor[i].width + "\" height=\"" + Node.sImageRectVetor[i].height + " \"/>\n");
+				_fileStream.writeMultiByte("<SubTexture name=\"" + Node.sImageNameArray[i] + "\" x=\"" + Node.sImageRectVetor[i].x 
+					+ "\" y=\"" + Node.sImageRectVetor[i].y + "\" width=\"" + Node.sImageRectVetor[i].width + "\" height=\"" + Node.sImageRectVetor[i].height + " \"/>\n","EUC-KR");
 			}
 			_fileStream.writeUTFBytes("</TextureAtlas>");
 			_fileStream.close();

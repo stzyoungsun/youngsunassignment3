@@ -2,18 +2,19 @@ package
 {
 	import flash.display.Bitmap;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.filesystem.File;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
-	import flash.filesystem.File;
-	import flash.display.LoaderInfo;
 	
 	public class LoaderImage
 	{
 		private var _pieceLoader : Loader = new Loader();
 		
+		public static var sFileNameVecotr : Vector.<String> = new Vector.<String>;
 		public static var sCurrentCount : int = 1;
-		public static const MAC_PIECE_COUNT : int = 40;
+		public static var sImageMaxCount :int;
 		
 		private var _picecBitmapDictionary : Dictionary = new Dictionary();
 		
@@ -49,8 +50,8 @@ package
 			var loaderInfo:LoaderInfo = LoaderInfo(e.target);
 			
 			var filename:String = loaderInfo.url;
-			filename = filename.substring(16, filename.length);
-			
+			filename = decodeURIComponent(filename.substring(16, filename.length));
+			sFileNameVecotr.push(filename);
 			_picecBitmapDictionary[filename] =  e.target.content as Bitmap;
 			chedckedImage();
 		}
@@ -62,7 +63,7 @@ package
 		{
 			
 			trace(sCurrentCount);
-			if(sCurrentCount == MAC_PIECE_COUNT) 
+			if(sCurrentCount == sImageMaxCount) 
 			{
 				_completeFunction();
 				clearLoader();
@@ -82,7 +83,11 @@ package
 			findOnlyImageFile(array);
 			buildLoader();
 		}
-		
+		/**
+		 * 
+		 * @return 
+		 * 불러올 폴더명 지정
+		 */		
 		private function getResource():Array
 		{
 			var directory:File = File.applicationDirectory.resolvePath("PieceImage");
@@ -90,7 +95,11 @@ package
 			
 			return array;
 		}
-		
+		/**
+		 * 
+		 * @param resourceArray 저장
+		 * 폴더에서 jpg,png파일만 array에 저장
+		 */		
 		private function findOnlyImageFile(resourceArray:Array):void
 		{			
 			for(var i:int = 0; i<resourceArray.length; ++i)
@@ -103,14 +112,19 @@ package
 				if(extension == "png" || extension == "jpg")
 				{
 					url = url.substring(5, url.length);	
-					_urlArray.push(url);					
+					
+					_urlArray.push(decodeURIComponent(url));					
 					
 				}
 			}
 		}
-		
+		/**
+		 *이미지 로더 수행 
+		 * 
+		 */		
 		private function buildLoader():void
 		{
+			sImageMaxCount =_urlArray.length;   
 			for(var i:int = 0; i<_urlArray.length; ++i)
 			{
 				var loader:Loader = new Loader();

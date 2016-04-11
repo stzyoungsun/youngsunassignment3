@@ -10,16 +10,13 @@ package
 	
 	public class MakeSpriteSheet
 	{	
-		public static const MAX_SHEET_WIDTH :int = 1024;
-		public static const MAX_SHEET_HEIGHT :int = 1024;
-		
 		private var _pieceImage : Dictionary = new Dictionary();
 		
 		private var _cBinaryTree : BinaryTree;
 		private var _cIDBitmap : IDBitmap;
 		private var _cSaveToFile : SaveToFile = new SaveToFile();
 		
-		private var _spriteSheet : BitmapData = new BitmapData(MAX_SHEET_WIDTH,MAX_SHEET_HEIGHT);
+		private var _spriteSheet : BitmapData;
 		private var _bitmap : Bitmap;
 		private var _imagePos : Point = new Point(0,0);
 		private var _pieceBitmap : Vector.<IDBitmap> = new Vector.<IDBitmap>;
@@ -30,7 +27,7 @@ package
 			sortImage();
 			setPacking();
 			_bitmap = new Bitmap(_spriteSheet);
-			
+		
 		}
 		/**
 		 *Note @유영선 로드 된 이미지 데이터를 크기 별로 정렬 하는 함수 
@@ -40,10 +37,10 @@ package
 		{
 			var imageTemp : Vector.<Bitmap> = new Vector.<Bitmap>;
 			
-			for(var i : int=1; i<=LoaderImage.MAC_PIECE_COUNT; i++)
+			for(var i : int=0; i<LoaderImage.sImageMaxCount; i++)
 			{
-				_cIDBitmap = new IDBitmap(_pieceImage["piece" + i + ".png"],i);
-				_pieceBitmap[i-1] = _cIDBitmap;
+				_cIDBitmap = new IDBitmap(_pieceImage[LoaderImage.sFileNameVecotr[i]],LoaderImage.sFileNameVecotr[i]);
+				_pieceBitmap[i] = _cIDBitmap;
 			}
 			_pieceBitmap.sort(orderAbs);
 			
@@ -64,29 +61,54 @@ package
 		 */		
 		private function setPacking() : void
 		{
-
-			var rc :Rectangle = new Rectangle(0,0,MAX_SHEET_WIDTH,MAX_SHEET_HEIGHT);
-			_cBinaryTree = new BinaryTree(rc);
 			
-			for(var i : int=0; i<LoaderImage.MAC_PIECE_COUNT; i++)
+			var powCount : int = 1;
+			var rootSize : int = 2;
+			var rc :Rectangle = new Rectangle(0,0,Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
+			
+			_cBinaryTree = new BinaryTree(rc);		//root의 크기를 2의 n승의 크기로 증가를 시키면서 병합을 진행합니다.
+		
+			for(var i : int=0; i<LoaderImage.sImageMaxCount; i++)
 			{
-				_cBinaryTree.insert(_pieceBitmap[i].getBitmap(),_pieceBitmap[i].getID(),_cBinaryTree.getroot());
+				if(_cBinaryTree.insert(_pieceBitmap[i].getBitmap(),_pieceBitmap[i].getFileName(),_cBinaryTree.getroot())==null && Math.pow(rootSize,powCount) < 2048)
+				{
+					trace("크기 초과");
+					i =-1;
+					powCount++;
+					rc = new Rectangle(0,0,Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
+					_cBinaryTree = new BinaryTree(rc);
+				}
+//				else if(Math.pow(rootSize,powCount) == 2048)
+//				{
+//					
+//				}
+				else
+					continue;
+				
 			}
+			trace(Math.pow(rootSize,powCount));
 			_cBinaryTree.getroot().inOrder();
 			
+			
+			_spriteSheet= new BitmapData(Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
 			for(var j : int=0; j<Node.sImageRectVetor.length; j++)
 			{
 				var imageMatrix:Matrix = new Matrix();
-				trace("ImageID : "+Node.sImageIDArray[j]);
+				trace("ImageName : "+Node.sImageNameArray[j]);
 				trace("Image x: "+Node.sImageRectVetor[j].x);
 				trace("Image y : "+Node.sImageRectVetor[j].y);
-				_bitmap = _pieceImage["piece" + Node.sImageIDArray[j] + ".png"];
+				_bitmap = _pieceImage[ Node.sImageNameArray[j]];
 				
 				imageMatrix.translate( Node.sImageRectVetor[j].x,Node.sImageRectVetor[j].y);
 				_spriteSheet.draw(_bitmap,imageMatrix);
 			}
 			
 		}
+		/**
+		 *Note @유영선 삽입된 Image의 크기에 맞게 Sheet를 생성합니다. 
+		 * 
+		 */		
+
 		public function getSheet() : Bitmap
 		{
 			_cSaveToFile.saveToPNG(_bitmap);

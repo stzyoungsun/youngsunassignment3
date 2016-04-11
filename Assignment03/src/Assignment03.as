@@ -6,6 +6,7 @@ package
 	
 	import MainClass;
 	[SWF(width="1024", height="1024", frameRate="60", backgroundColor="#ffffff")]
+	
 	public class Assignment03 extends Sprite
 	{
 		private var _cMainClass : MainClass = new MainClass();

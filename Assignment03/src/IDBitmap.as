@@ -8,20 +8,20 @@ package
 	public class IDBitmap
 	{
 		private var _bitmap : Bitmap;
-		private var _id : int;
-		public function IDBitmap(bitmap:Bitmap, ID:int)
+		private var _filename : String;
+		public function IDBitmap(bitmap:Bitmap, fileName:String)
 		{
 			_bitmap = bitmap;
-			_id = ID;
+			_filename = fileName;
 		}
 		
 		public function getBitmap() : Bitmap
 		{
 			return _bitmap;
 		}
-		public function getID() : int
+		public function getFileName() : String
 		{
-			return _id;
+			return _filename;
 		}
 	}
 }
