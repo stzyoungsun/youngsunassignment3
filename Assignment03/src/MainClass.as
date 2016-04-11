@@ -17,7 +17,7 @@ package
 		private var _progressText : String = "";
 		
 		private var _outMainTexture : Function;
-		private var _addButton : Function;
+		private var _outMainBitmap : Function;
 	
 		public function MainClass()
 		{
@@ -29,10 +29,10 @@ package
 		 * @param outMainBitmap  화면에 병합된 bitmap 출력하기 위한 함수 호출
 		 * Note @유영선 
 		 */		
-		public function initialize (outMainTexture:Function, addButton:Function) : void
+		public function initialize (outMainTexture:Function, outMainBitmap:Function) : void
 		{
 			_outMainTexture=outMainTexture;
-			_addButton=addButton;
+			_outMainBitmap=outMainBitmap;
 			
 			_progressTextField = new TextField();
 			_progressTextField.width = 150;
@@ -46,19 +46,8 @@ package
 			_progressLoadImage = progressLoadImage;
 			
 			_cLoaderImage = new LoaderImage(_completeLoadImage,_progressLoadImage);
-			
 		}
 		
-		public function onClickButton(e:Event) : void
-		{
-			
-
-			_progressText = "Sprite Sheet 제작 완료\n내문서를 확인 해주세요.";
-			_progressTextField.text = _progressText;
-			
-			_cMakeSpriteSheet = new MakeSpriteSheet(_cLoaderImage.getBitmap());
-			_cMakeSpriteSheet.getSheet();
-		}
 		/**
 		 * Note @유영선 이미지 로드가 모두 완료 후 호출 되는 함수
 		 * 
@@ -67,7 +56,9 @@ package
 		{
 			_progressText = "로딩 완료";
 			_progressTextField.text = _progressText;
-			_addButton(130,410,"Make Sprite-Sheet")
+			
+			_cMakeSpriteSheet = new MakeSpriteSheet(_cLoaderImage.getBitmap());
+			_outMainBitmap(_cMakeSpriteSheet.getSheet());
 		}
 		/**
 		 * 
@@ -76,7 +67,7 @@ package
 		 */		
 		public function progressLoadImage(progressCount : int) : void
 		{
-			_progressText = "로딩 중 : " + String(progressCount);
+			_progressText = "로딩 중 ";
 			_progressTextField.text = _progressText;	
 		}
 	}

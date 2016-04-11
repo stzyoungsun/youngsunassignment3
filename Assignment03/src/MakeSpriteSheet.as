@@ -127,12 +127,14 @@ package
 		 *Note @유영선 삽입된 Image의 크기에 맞게 Sheet를 생성합니다. 
 		 * 
 		 */		
-		public function getSheet() : void
+		public function getSheet() : Vector.<Bitmap>
 		{
 			trace(_spriteSheetRect.length);
 			
 			_cSaveToFile.saveToPNG(_spriteSheetBitmap);
 			_cSaveToFile.exportToXML(_spriteSheetRect,_spriteSheetName);
+			
+			return _spriteSheetBitmap;
 		}
 		
 	}
