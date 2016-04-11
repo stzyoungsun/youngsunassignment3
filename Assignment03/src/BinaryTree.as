@@ -8,6 +8,9 @@ package
 		private var _root : Node;
 		private var _pnode : Node;
 		private var _rotateFlag : Boolean = false;
+		private  var _imageRectVetor : Vector.<Rectangle> = new Vector.<Rectangle>;
+		private  var _imageNameArray : Array = new Array();
+		
 		/**
 		 * 
 		 * @param rc Image의 Rectangle 데이터
@@ -28,11 +31,29 @@ package
 			return _root;
 		}
 		/**
+		 * 
+		 * @return  Note @유영선 이진트리에 저장되어 있는 이미지 이름  
+		 *
+		 */		
+		public function getNameArray() : Array
+		{
+			return _imageNameArray;
+		}
+		/**
+		 * 
+		 * @return  Note @유영선 이진트리에 저장되어 있는 이미지의 위치
+		 *
+		 */			
+		public function getRectVetor() : Vector.<Rectangle>
+		{
+			return _imageRectVetor;
+		}
+		/**
 		 *Note @유영선 중위 순회 
 		 * 
 		 */		
 		public function inOrder() : void {
-			_root.inOrder();
+			_pnode.inOrder(_imageRectVetor,_imageNameArray);
 		}
 		
 		/**
@@ -70,7 +91,6 @@ package
 				if( currentNode.getrc().width == bitmap.width && currentNode.getrc().height == bitmap.height)   //현재 영역에 삽입 할 이미지의 크기가 딱 맞는 경우
 				{
 					currentNode.setImageName(imageName);
-					currentNode.setRotateFlag(_rotateFlag);
 					return currentNode;
 				}
 				

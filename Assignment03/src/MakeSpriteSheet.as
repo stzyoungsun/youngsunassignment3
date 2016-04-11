@@ -17,7 +17,13 @@ package
 		private var _cSaveToFile : SaveToFile = new SaveToFile();
 		
 		private var _spriteSheet : BitmapData;
+		
+		private var _spriteSheetBitmap : Vector.<Bitmap> = new Vector.<Bitmap>;
+		private var _spriteSheetRect : Vector.<Vector.<Rectangle>> = new  Vector.<Vector.<Rectangle>>;
+		private var _spriteSheetName : Vector.<Array> = new  Vector.<Array>;
+		
 		private var _bitmap : Bitmap;
+		
 		private var _imagePos : Point = new Point(0,0);
 		private var _pieceBitmap : Vector.<IDBitmap> = new Vector.<IDBitmap>;
 		
@@ -26,8 +32,6 @@ package
 			_pieceImage = pieceImage;
 			sortImage();
 			setPacking();
-			_bitmap = new Bitmap(_spriteSheet);
-		
 		}
 		/**
 		 *Note @유영선 로드 된 이미지 데이터를 크기 별로 정렬 하는 함수 
@@ -58,19 +62,22 @@ package
 		 *Note @유영선 Image 병합 시작 
 		 * 이진 트리를 이용하여 큰 Bimap을 쪼개어 그 좌표 값을 이진트리로 만든후 중위 순회를 이용하여 이미지들의 좌표를 저장
 		 * sheet에 평행 이동을 이용하여 저장 된 좌표에 출력
+		 * _spriteSheetRect [sheet 개수][sheet 안에 이미지 개수의 위치 값] 의 이차원 벡터
+		 * _spriteSheetName [sheet 개수][sheet 안에 이미지 이름] 의 이차원 벡터
 		 */		
 		private function setPacking() : void
 		{
-			
+			var excessImage : Vetor.<IDBitmap> = new Vector.<IDBitmap>;
 			var powCount : int = 1;
 			var rootSize : int = 2;
 			var rc :Rectangle = new Rectangle(0,0,Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
 			
 			_cBinaryTree = new BinaryTree(rc);		//root의 크기를 2의 n승의 크기로 증가를 시키면서 병합을 진행합니다.
-		
-			for(var i : int=0; i<LoaderImage.sImageMaxCount; i++)
+			
+			for(var i : int=0; i<_pieceBitmap.length; i++)
 			{
-				if(_cBinaryTree.insert(_pieceBitmap[i].getBitmap(),_pieceBitmap[i].getFileName(),_cBinaryTree.getroot())==null && Math.pow(rootSize,powCount) < 2048)
+				var NewNode : Node = _cBinaryTree.insert(_pieceBitmap[i].getBitmap(),_pieceBitmap[i].getFileName(),_cBinaryTree.getroot())
+				if(NewNode==null && Math.pow(rootSize,powCount) < 2048)
 				{
 					trace("크기 초과");
 					i =-1;
@@ -78,42 +85,54 @@ package
 					rc = new Rectangle(0,0,Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
 					_cBinaryTree = new BinaryTree(rc);
 				}
-//				else if(Math.pow(rootSize,powCount) == 2048)
-//				{
-//					
-//				}
+				else if(NewNode==null && Math.pow(rootSize,powCount) == 2048)
+				{
+					trace("크기 초과하고 시트 크기가 2048인 경우");
+					excessImage.push(_pieceBitmap[i]);		//초과 이미지 벡터에 이미지 저장
+				}
 				else
 					continue;
 				
 			}
 			trace(Math.pow(rootSize,powCount));
-			_cBinaryTree.getroot().inOrder();
+			_cBinaryTree.inOrder();
 			
 			
 			_spriteSheet= new BitmapData(Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
-			for(var j : int=0; j<Node.sImageRectVetor.length; j++)
+			for(var j : int=0; j<_pieceBitmap.length-excessImage.length; j++)
 			{
 				var imageMatrix:Matrix = new Matrix();
-				trace("ImageName : "+Node.sImageNameArray[j]);
-				trace("Image x: "+Node.sImageRectVetor[j].x);
-				trace("Image y : "+Node.sImageRectVetor[j].y);
-				_bitmap = _pieceImage[ Node.sImageNameArray[j]];
+				trace("ImageName : "+_cBinaryTree.getNameArray()[j]);
+				trace("Image x: "+_cBinaryTree.getRectVetor()[j].x);
+				trace("Image y : "+_cBinaryTree.getRectVetor()[j].y);
+				_bitmap = _pieceImage[_cBinaryTree.getNameArray()[j]];
 				
-				imageMatrix.translate( Node.sImageRectVetor[j].x,Node.sImageRectVetor[j].y);
+				imageMatrix.translate(_cBinaryTree.getRectVetor()[j].x,_cBinaryTree.getRectVetor()[j].y);
 				_spriteSheet.draw(_bitmap,imageMatrix);
 			}
 			
+			_spriteSheetBitmap.push(new Bitmap(_spriteSheet));
+			_spriteSheetRect.push(_cBinaryTree.getRectVetor());
+			_spriteSheetName.push(_cBinaryTree.getNameArray());
+			
+			if(excessImage.length != 0)
+			{
+				_pieceBitmap=excessImage;
+				setPacking();
+			}
+			else
+				return;
 		}
 		/**
 		 *Note @유영선 삽입된 Image의 크기에 맞게 Sheet를 생성합니다. 
 		 * 
 		 */		
-
-		public function getSheet() : Bitmap
+		public function getSheet() : void
 		{
-			_cSaveToFile.saveToPNG(_bitmap);
-			_cSaveToFile.exportToXML();
-			return _bitmap;
+			trace(_spriteSheetRect.length);
+			
+			_cSaveToFile.saveToPNG(_spriteSheetBitmap);
+			_cSaveToFile.exportToXML(_spriteSheetRect,_spriteSheetName);
 		}
 		
 	}
