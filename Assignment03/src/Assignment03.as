@@ -2,17 +2,24 @@ package
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
 	import MainClass;
 	
-	[SWF(width="2048", height="2048", frameRate="60", backgroundColor="#ffffff")]
+	[SWF(width="400", height="594", frameRate="60", backgroundColor="#ffffff")]
 	
 	public class Assignment03 extends Sprite
 	{	
+		[Embed(source="../bin-debug/backgroud.png")]
+		private var _backGround:Class;
+		private var _backGroundBitmap : Bitmap = new _backGround() as Bitmap;
+		
 		private var _TextField : TextField;
 		private var _cMainClass : MainClass = new MainClass();
 		private var _countSheet : int = 0;
@@ -22,10 +29,14 @@ package
 		private var _preButton:Sprite;
 		private var _spriteSheet:Sprite = new Sprite();
 		
+
 		public function Assignment03()
 		{
 			_cMainClass.initialize(outTextField, outBitmap);
-			//addEventListener(Event.,release);
+			stage.scaleMode = StageScaleMode.NO_SCALE ;		//stage 모드를  No_SCALE로 변경
+			stage.align = StageAlign.TOP_LEFT; 
+			
+			addChild(_backGroundBitmap);
 		}
 		
 		/**
@@ -47,6 +58,7 @@ package
 		{
 			_spriteBitmap = spriteBitmap;
 			removeChild(_TextField);
+			removeChild(_backGroundBitmap);
 			
 			printSheet();
 			
@@ -64,6 +76,9 @@ package
 		 */		
 		public function printSheet() : void
 		{
+			stage.stageWidth = _spriteBitmap[_countSheet].width;		//stage 크기를 이미지 크게에 맞게 조절
+			stage.stageHeight = _spriteBitmap[_countSheet].height;
+			
 			addChildAt(_spriteBitmap[_countSheet],0);
 		}
 		/**
@@ -121,6 +136,7 @@ package
 		 */		
 		private function onClickedButton (e:Event) : void
 		{
+			
 			var clicked:Sprite = e.currentTarget as Sprite;
 			removeChildAt(0);
 			switch(clicked)
@@ -135,18 +151,11 @@ package
 					if(_countSheet >= _spriteBitmap.length-1)break;
 					else _countSheet++;
 					break;
+				
 			}	
 			
 			printSheet();
 		}	
 		
-		private function release() : void
-		{
-			if(_spriteBitmap.length > 1)
-			{
-				_nextButton.removeEventListener(MouseEvent.CLICK, onClickedButton);
-				_preButton.removeEventListener(MouseEvent.CLICK, onClickedButton);
-			}
-		}
 	}
 }

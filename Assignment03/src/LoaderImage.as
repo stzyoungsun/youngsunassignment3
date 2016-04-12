@@ -31,9 +31,6 @@ package
 		 */		
 		public function LoaderImage(completeFunction:Function, progressFunction : Function)
 		{
-			//_pieceLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoadComplete);
-			
-			//_pieceLoader.load(new URLRequest("PieceImage/piece"+ String(sCurrentCount) + ".png"));
 		
 			_completeFunction = completeFunction;
 			_progressFunction = progressFunction;
@@ -109,7 +106,7 @@ package
 				
 				var extension:String = url.substr(url.lastIndexOf(".") + 1, url.length);
 				
-				if(extension == "png" || extension == "jpg")
+				if(extension == "png" || extension == "jpg" || extension == "PNG" || extension == "JPG")
 				{
 					url = url.substring(5, url.length);	
 					

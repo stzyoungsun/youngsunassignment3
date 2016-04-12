@@ -14,7 +14,7 @@ package
 		
 		private var _cBinaryTree : BinaryTree;
 		private var _cIDBitmap : IDBitmap;
-		private var _cSaveToFile : SaveToFile = new SaveToFile();
+		private var _cSaveToFile : SaveToFile;
 		
 		private var _spriteSheet : BitmapData;
 		
@@ -77,7 +77,7 @@ package
 			for(var i : int=0; i<_pieceBitmap.length; i++)
 			{
 				var NewNode : Node = _cBinaryTree.insert(_pieceBitmap[i].getBitmap(),_pieceBitmap[i].getFileName(),_cBinaryTree.getroot())
-				if(NewNode==null && Math.pow(rootSize,powCount) < 2048)
+				if(NewNode==null && Math.pow(rootSize,powCount) < 1024)
 				{
 					trace("크기 초과");
 					i =-1;
@@ -85,7 +85,7 @@ package
 					rc = new Rectangle(0,0,Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
 					_cBinaryTree = new BinaryTree(rc);
 				}
-				else if(NewNode==null && Math.pow(rootSize,powCount) == 2048)
+				else if(NewNode==null && Math.pow(rootSize,powCount) == 1024)
 				{
 					trace("크기 초과하고 시트 크기가 2048인 경우");
 					excessImage.push(_pieceBitmap[i]);		//초과 이미지 벡터에 이미지 저장
@@ -130,9 +130,7 @@ package
 		public function getSheet() : Vector.<Bitmap>
 		{
 			trace(_spriteSheetRect.length);
-			
-			_cSaveToFile.saveToPNG(_spriteSheetBitmap);
-			_cSaveToFile.exportToXML(_spriteSheetRect,_spriteSheetName);
+			_cSaveToFile = new SaveToFile(_spriteSheetBitmap,_spriteSheetRect, _spriteSheetName);
 			
 			return _spriteSheetBitmap;
 		}
