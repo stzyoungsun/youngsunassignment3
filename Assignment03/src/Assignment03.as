@@ -5,7 +5,6 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.InvokeEvent;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
@@ -20,7 +19,6 @@ package
 		private var _backGround:Class;
 		private var _backGroundBitmap : Bitmap = new _backGround() as Bitmap;
 		
-		private var _TextField : TextField;
 		private var _cMainClass : MainClass = new MainClass();
 		private var _countSheet : int = 0;
 		private var _spriteBitmap:  Vector.<Bitmap>;
@@ -28,11 +26,10 @@ package
 		private var _nextButton:Sprite;
 		private var _preButton:Sprite;
 		private var _spriteSheet:Sprite = new Sprite();
-		
 
 		public function Assignment03()
 		{
-			_cMainClass.initialize(outTextField, outBitmap);
+			_cMainClass.initialize(outBitmap);
 			stage.scaleMode = StageScaleMode.NO_SCALE ;		//stage 모드를  No_SCALE로 변경
 			stage.align = StageAlign.TOP_LEFT; 
 			
@@ -41,23 +38,12 @@ package
 		
 		/**
 		 * 
-		 * @param textField 로딩 텍스트
-		 * Note @유영선 이미지  로딩 화면 출력 
-		 */		
-		public function outTextField(textField : TextField ) : void
-		{
-			_TextField = textField;
-			addChild(_TextField);
-		}
-		/**
-		 * 
 		 * @param spriteBitmap sprite-sheet를 담고 있는 벡터
 		 * Note @유영선 Sheet그릴 준비
 		 */		
 		public function outBitmap (spriteBitmap : Vector.<Bitmap>) : void
 		{
 			_spriteBitmap = spriteBitmap;
-			removeChild(_TextField);
 			removeChild(_backGroundBitmap);
 			
 			printSheet();

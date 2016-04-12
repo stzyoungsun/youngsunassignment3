@@ -26,7 +26,7 @@ package
 			_saveFile = File.applicationDirectory;
 			_saveFile.addEventListener(Event.SELECT, onSelectHandler);
 			_saveFile.browseForDirectory("저장 할 png, xml의 폴더를 선택해주세요. (우측하단의 폴더선택을 눌러주세요!!)");
-			
+		
 			_spriteSheetBitmap = bitmap;
 			_spriteSheetRect = spriteSheetRect;
 			_spriteSheetName = spriteSheetName;
@@ -57,16 +57,16 @@ package
 				_fileStream.close();
 			}
 			
-			for(var i : int = 0; i< _spriteSheetName.length; i++)
+			for(var j : int = 0; j< _spriteSheetName.length; j++)
 			{
-				_saveFile.nativePath += "\\Sprite_Sheet["+i+"].xml";
+				_saveFile.nativePath += "\\Sprite_Sheet["+j+"].xml";
 				_fileStream.open(_saveFile, FileMode.WRITE);
 				_fileStream.writeUTFBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-				_fileStream.writeUTFBytes("<TextureAtlas ImagePath=\"" + "sprite_sheet["+i+"].png" + "\">\n");
-				for(var j : int = 0; j< _spriteSheetName[i].length; j++)
+				_fileStream.writeUTFBytes("<TextureAtlas ImagePath=\"" + "sprite_sheet["+j+"].png" + "\">\n");
+				for(var k : int = 0; k< _spriteSheetName[j].length; k++)
 				{
-					_fileStream.writeMultiByte("<SubTexture name=\"" + _spriteSheetName[i][j] + "\" x=\"" + _spriteSheetRect[i][j].x 
-						+ "\" y=\"" + _spriteSheetRect[i][j].y + "\" width=\"" + _spriteSheetRect[i][j].width + "\" height=\"" + _spriteSheetRect[i][j].height + " \"/>\n","EUC-KR");
+					_fileStream.writeMultiByte("<SubTexture name=\"" + _spriteSheetName[j][k] + "\" x=\"" + _spriteSheetRect[j][k].x 
+						+ "\" y=\"" + _spriteSheetRect[j][k].y + "\" width=\"" + _spriteSheetRect[j][k].width + "\" height=\"" + _spriteSheetRect[j][k].height + " \"/>\n","EUC-KR");
 				}
 				_fileStream.writeUTFBytes("</TextureAtlas>");
 				_fileStream.close();

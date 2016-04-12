@@ -7,7 +7,6 @@ package
 	{	
 		private var _root : Node;
 		private var _pnode : Node;
-		private var _rotateFlag : Boolean = false;
 		private  var _imageRectVetor : Vector.<Rectangle> = new Vector.<Rectangle>;
 		private  var _imageNameArray : Array = new Array();
 		
@@ -65,8 +64,8 @@ package
 		 * Note @알고리즘 설명
 
 		 *  pre. Image 삽입 전 효율을 높이기 위해서 크기 순으로 정렬
-		 * 1. 이진트리를 사용 (각 Node -> 좌표, Image ID)
-		 * 2. 처음 root에는 Sprite-Sheet의 크기 1024*1024, Image ID = -1로 생성 -> 수정 Note @유영선 root의 크기를 2의 n승으로 증가시키면서 병합 진행
+		 * 1. 이진트리를 사용 (각 Node -> 좌표, Image Name)
+		 * 2. 처음 root에는 Sprite-Sheet의 크기 1024*1024, Image Name = "NULL"로 생성 -> 수정 Note @유영선 root의 크기를 2의 n승으로 증가시키면서 병합 진행
 		 * 3. 처음 Image를 삽입 하고 그 Image에 따라 공간을 분할 하고 그 공간을 Node에 삽입 
 		 * 4. Image에 딱 맞는 공간 발견 시 그 공간에 Image ID를 설정 후 return
 		 * 5. 다음 삽입 부터는 깊이우선탐색(BST)을 활용하여 모든 노드를 방문 하고 노드에 leaf가 없으면 3번과 마찬가리로 공간 분할 후 Node삽입
@@ -94,13 +93,11 @@ package
 					return currentNode;
 				}
 				
-				
 				if(currentNode.getrc().width < bitmap.width || currentNode.getrc().height < bitmap.height)    //현재 영역이 삽입 할 이미지 보다 클 경우
 				{
 						return null
 				}
 					
-				
 				var dw : int = currentNode.getrc().width - bitmap.width;
 				var dh : int = currentNode.getrc().height - bitmap.height;
 				

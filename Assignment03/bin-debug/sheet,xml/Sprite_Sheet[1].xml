@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas ImagePath="sprite_sheet[1].png">
-<SubTexture name="piece5.png" x="0" y="0" width="202" height="202 "/>
-</TextureAtlas>

@@ -19,7 +19,6 @@ package
 		private var _picecBitmapDictionary : Dictionary = new Dictionary();
 		
 		private var _completeFunction:Function;
-		private var _progressFunction:Function;
 		
 		private var _urlArray:Array = new Array();					//파일명이 담긴 배열
 		private var _imageDataArray:Array = new Array();			//ImageData가 담긴 배열 
@@ -29,11 +28,10 @@ package
 		 * @param progressFunction Mainclass의 동작 중 함수
 		 * Note @유영선 이미지데이터를 piece+번호 이런식으로 로딩
 		 */		
-		public function LoaderImage(completeFunction:Function, progressFunction : Function)
+		public function LoaderImage(completeFunction:Function)
 		{
 		
 			_completeFunction = completeFunction;
-			_progressFunction = progressFunction;
 			
 			resourceLoader();
 		}
@@ -69,7 +67,6 @@ package
 			else
 			{
 				sCurrentCount++;
-				_progressFunction(sCurrentCount);
 			}
 		}	
 		
