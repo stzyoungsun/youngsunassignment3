@@ -92,7 +92,7 @@ package
 			button.x = x;
 			button.y = y;
 			// buttonMode = true
-			button.buttonMode = true;
+			button.buttonMode = false;
 			// Stage의 자식으로 등록
 			addChildAt(button,1);
 			

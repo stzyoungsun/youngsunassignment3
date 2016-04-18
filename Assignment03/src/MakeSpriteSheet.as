@@ -50,10 +50,10 @@ package
 			
 			function orderAbs(image1:IDBitmap, image2:IDBitmap):int		
 			{
-				if(image1.getBitmap().width * image1.getBitmap().height< image2.getBitmap().width * image2.getBitmap().height)
-					return 1;
-				else if(image1.getBitmap().width * image1.getBitmap().height > image2.getBitmap().width * image2.getBitmap().height)
+				if(image1.getFileName()< image2.getFileName())
 					return -1;
+				else if(image1.getFileName() > image2.getFileName())
+					return 1;
 				else
 					return 0;	
 			}
@@ -101,14 +101,14 @@ package
 			_spriteSheet= new BitmapData(Math.pow(rootSize,powCount),Math.pow(rootSize,powCount));
 			for(var j : int=0; j<_pieceBitmap.length-excessImage.length; j++)
 			{
-				var imageMatrix:Matrix = new Matrix();
 				trace("ImageName : "+_cBinaryTree.getNameArray()[j]);
 				trace("Image x: "+_cBinaryTree.getRectVetor()[j].x);
 				trace("Image y : "+_cBinaryTree.getRectVetor()[j].y);
 				_bitmap = _pieceImage[_cBinaryTree.getNameArray()[j]];
+				var temp : uint = 0xff;
+				var tempRect : Rectangle = new Rectangle(0,0,_bitmap.width,_bitmap.height);
 				
-				imageMatrix.translate(_cBinaryTree.getRectVetor()[j].x,_cBinaryTree.getRectVetor()[j].y);
-				_spriteSheet.draw(_bitmap,imageMatrix);
+				_spriteSheet.merge(_bitmap.bitmapData,tempRect,new Point(_cBinaryTree.getRectVetor()[j].x,_cBinaryTree.getRectVetor()[j].y),temp,temp,temp,temp);
 			}
 			
 			_spriteSheetBitmap.push(new Bitmap(_spriteSheet));

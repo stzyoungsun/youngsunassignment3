@@ -1,6 +1,7 @@
 package
 {
 	import flash.display.Bitmap;
+	import flash.display.PNGEncoderOptions;
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -19,7 +20,7 @@ package
 		private var _spriteSheetRect :  Vector.<Vector.<Rectangle>>;
 		private var _spriteSheetName : Vector.<Array>;
 		
-		private var _bitmapByteArray:ByteArray; 
+		
 		
 		public function SaveToFile(bitmap:Vector.<Bitmap>, spriteSheetRect : Vector.<Vector.<Rectangle>>, spriteSheetName : Vector.<Array>)
 		{
@@ -47,12 +48,14 @@ package
 			_saveFile.removeEventListener(Event.SELECT, onSelectHandler);
 			var tempPath : String =  _saveFile.nativePath;
 			
+			 
 			for(var i : int =0; i < _spriteSheetBitmap.length; i++)
 			{
-				_bitmapByteArray = PNGEncoder.encode(_spriteSheetBitmap[i].bitmapData);
+				var bitmapByteArray:ByteArray = new ByteArray();
+				_spriteSheetBitmap[i].bitmapData.encode(new Rectangle(0,0,_spriteSheetBitmap[i].width,_spriteSheetBitmap[i].height), new PNGEncoderOptions(), bitmapByteArray);
 				_saveFile.nativePath += "\\Sprite_Sheet["+i+"].png";
 				_fileStream.open(_saveFile, FileMode.WRITE);
-				_fileStream.writeBytes(_bitmapByteArray);
+				_fileStream.writeBytes(bitmapByteArray);
 				_saveFile.nativePath = tempPath;
 				_fileStream.close();
 			}
