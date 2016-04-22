@@ -14,13 +14,13 @@ package
 		
 		private var _cBinaryTree : BinaryTree;
 		private var _cIDBitmap : IDBitmap;
-		private var _cSaveToFile : SaveToFile;
+		
 		
 		private var _spriteSheet : BitmapData;
 		
-		private var _spriteSheetBitmap : Vector.<Bitmap> = new Vector.<Bitmap>;
-		private var _spriteSheetRect : Vector.<Vector.<Rectangle>> = new  Vector.<Vector.<Rectangle>>;
-		private var _spriteSheetName : Vector.<Array> = new  Vector.<Array>;
+		private var _spriteSheetBitmaps : Vector.<Bitmap> = new Vector.<Bitmap>;
+		private var _spriteSheetRects : Vector.<Vector.<Rectangle>> = new  Vector.<Vector.<Rectangle>>;
+		private var _spriteSheetNames : Vector.<Array> = new  Vector.<Array>;
 		
 		private var _bitmap : Bitmap;
 		
@@ -50,9 +50,9 @@ package
 			
 			function orderAbs(image1:IDBitmap, image2:IDBitmap):int		
 			{
-				if(image1.getFileName()< image2.getFileName())
+				if(image1.getBitmap().width* image1.getBitmap().height< image2.getBitmap().width* image2.getBitmap().height)
 					return -1;
-				else if(image1.getFileName() > image2.getFileName())
+				else if(image1.getBitmap().width* image1.getBitmap().height > image2.getBitmap().width* image2.getBitmap().height)
 					return 1;
 				else
 					return 0;	
@@ -111,9 +111,9 @@ package
 				_spriteSheet.merge(_bitmap.bitmapData,tempRect,new Point(_cBinaryTree.getRectVetor()[j].x,_cBinaryTree.getRectVetor()[j].y),temp,temp,temp,temp);
 			}
 			
-			_spriteSheetBitmap.push(new Bitmap(_spriteSheet));
-			_spriteSheetRect.push(_cBinaryTree.getRectVetor());
-			_spriteSheetName.push(_cBinaryTree.getNameArray());
+			_spriteSheetBitmaps.push(new Bitmap(_spriteSheet));
+			_spriteSheetRects.push(_cBinaryTree.getRectVetor());
+			_spriteSheetNames.push(_cBinaryTree.getNameArray());
 			
 			if(excessImage.length != 0)
 			{
@@ -129,10 +129,18 @@ package
 		 */		
 		public function getSheet() : Vector.<Bitmap>
 		{
-			trace(_spriteSheetRect.length);
-			_cSaveToFile = new SaveToFile(_spriteSheetBitmap,_spriteSheetRect, _spriteSheetName);
-			
-			return _spriteSheetBitmap;
+		
+			return _spriteSheetBitmaps;
+		}
+		
+		public function getSheetRect() : Vector.<Vector.<Rectangle>>
+		{	
+			return _spriteSheetRects;
+		}
+		
+		public function getSheetName() : Vector.<Array>
+		{
+			return _spriteSheetNames;
 		}
 		
 	}

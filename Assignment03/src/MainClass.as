@@ -5,12 +5,10 @@ package
 	{
 		private var _cLoaderImage : LoaderImage;
 		private var _cMakeSpriteSheet : MakeSpriteSheet;
-		
-		private  var _completeLoadImage : Function;
-		private  var _progressLoadImage : Function;
-		
-		private var _outMainBitmap : Function;
 	
+		private var _onInitializeComplete : Function;
+		private var _cSaveToFile : SaveToFile;
+		
 		public function MainClass()
 		{
 			
@@ -21,13 +19,11 @@ package
 		 * @param outMainBitmap  화면에 병합된 bitmap 출력하기 위한 함수 호출
 		 * Note @유영선 
 		 */		
-		public function initialize (outMainBitmap:Function) : void
+		public function initialize (onInitializeComplete:Function) : void
 		{
-			_outMainBitmap=outMainBitmap;
+			_onInitializeComplete= onInitializeComplete;
 			
-			_completeLoadImage = completeLoadImage;
-			
-			_cLoaderImage = new LoaderImage(_completeLoadImage);
+			_cLoaderImage = new LoaderImage(completeLoadImage);
 		}
 		
 		/**
@@ -37,7 +33,10 @@ package
 		public function completeLoadImage() : void
 		{
 			_cMakeSpriteSheet = new MakeSpriteSheet(_cLoaderImage.getBitmap());
-			_outMainBitmap(_cMakeSpriteSheet.getSheet());
+			_onInitializeComplete(_cMakeSpriteSheet.getSheet());
+			
+			_cSaveToFile = new SaveToFile(_cMakeSpriteSheet.getSheet(),_cMakeSpriteSheet.getSheetRect(), _cMakeSpriteSheet.getSheetName());
+			
 		}
 	}
 }
