@@ -29,7 +29,7 @@ package
 
 		public function Assignment03()
 		{
-			_cMainClass.initialize(outBitmap);
+			_cMainClass.initialize(onInitializeComplete);
 			stage.scaleMode = StageScaleMode.NO_SCALE ;		//stage 모드를  No_SCALE로 변경
 			stage.align = StageAlign.TOP_LEFT; 
 			
@@ -41,7 +41,7 @@ package
 		 * @param spriteBitmap sprite-sheet를 담고 있는 벡터
 		 * Note @유영선 Sheet그릴 준비
 		 */		
-		public function outBitmap (spriteBitmap : Vector.<Bitmap>) : void
+		public function onInitializeComplete (spriteBitmap : Vector.<Bitmap>) : void
 		{
 			_spriteBitmap = spriteBitmap;
 			removeChild(_backGroundBitmap);
